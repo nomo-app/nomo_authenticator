@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nomo_authenticator/pages/home.dart';
+import 'package:nomo_authenticator/routes.dart';
+import 'package:nomo_authenticator/theme.dart';
+import 'package:nomo_ui_kit/app/nomo_app.dart';
+import 'package:nomo_ui_kit/theme/nomo_theme.dart';
 
+final appRouter = AppRouter();
 void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
@@ -11,13 +15,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return NomoApp(
+      appRouter: appRouter,
+      supportedLocales: const [Locale('en', 'US')],
+      theme: NomoThemeData(
+        colorTheme: ColorMode.LIGHT.theme,
+        sizingTheme: SizingMode.LARGE.theme,
+        textTheme: typography,
+        constants: constants,
       ),
-      home: const Home(),
+      sizingThemeBuilder: (width) => switch (width) {
+        < 480 => sizingSmall,
+        < 1080 => sizingMedium,
+        _ => sizingLarge,
+      },
     );
   }
 }

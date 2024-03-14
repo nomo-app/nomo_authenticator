@@ -18,6 +18,8 @@ dependencies:
 
   webon_kit_dart:
     path: packages/webon-kit-dart
+  nomo_ui_kit:
+    path: packages/nomo-ui-kit
   nomo_router:
     path: packages/nomo-ui-kit/packages/nomo-router
   route_gen:
@@ -25,6 +27,7 @@ dependencies:
 
 
   cupertino_icons: ^1.0.2
+  google_fonts: 6.1.0
   flutter_riverpod: ^2.5.1
   riverpod_annotation: ^2.3.5
 
