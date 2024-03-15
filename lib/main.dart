@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nomo_authenticator/routes.dart';
 import 'package:nomo_authenticator/theme.dart';
 import 'package:nomo_ui_kit/app/nomo_app.dart';

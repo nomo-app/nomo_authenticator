@@ -1,32 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nomo_ui_kit/theme/nomo_theme.dart';
-import 'package:webon_kit_dart/webon_kit_dart.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nomo_authenticator/widgets/floating_action_button.dart';
+import 'package:nomo_authenticator/widgets/otp_list_tile.dart';
+import 'package:nomo_ui_kit/components/app/scaffold/nomo_scaffold.dart';
 
 class Home extends ConsumerWidget {
   const Home({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final colors = context.theme.colors;
-
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: colors.primary,
-        child: Icon(
-          color: colors.onPrimary,
-          Icons.add,
-        ),
-        onPressed: () async {
-          final content = await WebonKitDart.scanQR();
-          print(content);
-        },
-      ),
-      body: ListView.builder(
+    return NomoScaffold(
+      floatingActionButton: const SelectActionButton(),
+      child: ListView.builder(
+        itemCount: 3,
         itemBuilder: (context, index) {
-          return ListTile(
-            title: Text('Item $index'),
-            onTap: () {},
+          return Container(
+            padding: const EdgeInsets.all(16),
+            child: const OTPListTile(
+              name: "hello",
+              secret: "asdasdad",
+            ),
           );
         },
       ),
