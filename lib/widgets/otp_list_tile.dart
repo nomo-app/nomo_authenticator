@@ -1,40 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nomo_authenticator/providers/timer_provider.dart';
 import 'package:nomo_ui_kit/components/text/nomo_text.dart';
 import 'package:nomo_ui_kit/theme/nomo_theme.dart';
 import 'package:otp/otp.dart';
 
-class OTPListTile extends ConsumerStatefulWidget {
-  const OTPListTile({required this.name, required this.secret, super.key});
-
+class OTPListTile extends ConsumerWidget {
   final String name;
   final String secret;
 
-  @override
-  ConsumerState<OTPListTile> createState() => _OTPListTileState();
-}
-
-class _OTPListTileState extends ConsumerState<OTPListTile> {
-  var code = "";
-  ValueNotifier<int> timeNotifier = ValueNotifier(0);
-  int time = 0;
+  const OTPListTile({required this.name, required this.secret, super.key});
 
   @override
-  void initState() {
-    code = OTP.generateTOTPCodeString(
-        widget.secret, DateTime.now().millisecondsSinceEpoch,
-        interval: 30, algorithm: Algorithm.SHA512);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final time = DateTime.now().millisecondsSinceEpoch;
 
-    time = OTP.remainingSeconds();
+    final code = OTP.generateTOTPCodeString(
+      secret,
+      time,
+      algorithm: Algorithm.SHA1,
+      isGoogle: true,
+    );
 
-    timeNotifier.value = time;
-    super.initState();
-  }
+    final timeNotifier = OTP.remainingSeconds();
 
-  @override
-  Widget build(BuildContext context) {
+    ref.watch(remainingSecondsProvider);
+
     return ListTile(
-      title: NomoText(widget.name),
+      title: NomoText(name),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -47,11 +40,11 @@ class _OTPListTileState extends ConsumerState<OTPListTile> {
             alignment: Alignment.center,
             children: [
               CircularProgressIndicator(
-                value: timeNotifier.value / 30,
+                value: timeNotifier / 30,
                 valueColor: AlwaysStoppedAnimation(context.colors.primary),
               ),
               NomoText(
-                timeNotifier.value.toString(),
+                timeNotifier.toString(),
                 style: context.typography.b3.copyWith(
                   color: context.colors.foreground1,
                 ),

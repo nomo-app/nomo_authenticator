@@ -54,7 +54,10 @@ class SelectActionButton extends ConsumerWidget {
           case "enterCode":
             // ignore: use_build_context_synchronously
             final result = await handleEnterCode(context);
-            debugPrint(result);
+            debugPrint(result?.entries.toString());
+
+            // WebonKitDart.setLocalStorage(key: key, value: value);
+
             break;
           default:
             break;
@@ -68,24 +71,37 @@ class SelectActionButton extends ConsumerWidget {
     return qrCode;
   }
 
-  Future<String?> handleEnterCode(
+  Future<Map<String, String>?> handleEnterCode(
     BuildContext context,
   ) async {
     final typography = context.theme.typography;
     final colors = context.theme.colors;
-    final notifier = ValueNotifier<String>('');
+    final codeNotifier = ValueNotifier<String>('');
+    final hostnameNotifier = ValueNotifier<String>('');
 
     final result = await showDialog(
       context: context,
       builder: (context) => NomoDialog(
         title: 'Enter Code Manually',
         titleStyle: typography.h2,
-        content: NomoInput(
-          height: 50,
-          style: typography.b3,
-          placeHolder: 'Enter Code',
-          placeHolderStyle: typography.b3,
-          valueNotifier: notifier,
+        content: Column(
+          children: [
+            NomoInput(
+              height: 50,
+              style: typography.b3,
+              valueNotifier: hostnameNotifier,
+              placeHolder: 'Enter Hostname',
+              placeHolderStyle: typography.b3,
+            ),
+            const SizedBox(height: 16),
+            NomoInput(
+              height: 50,
+              style: typography.b3,
+              placeHolder: 'Enter Code',
+              placeHolderStyle: typography.b3,
+              valueNotifier: codeNotifier,
+            ),
+          ],
         ),
         actions: [
           Expanded(
@@ -110,7 +126,10 @@ class SelectActionButton extends ConsumerWidget {
               onPressed: () {
                 Navigator.pop(
                   context,
-                  notifier.value,
+                  {
+                    'hostname': hostnameNotifier.value,
+                    'code': codeNotifier.value,
+                  },
                 );
               },
               child: NomoText(
