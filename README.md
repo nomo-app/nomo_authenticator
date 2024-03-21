@@ -1,16 +1,20 @@
-# nomo_authenticator
+# Nomo Authenticator
 
-A new Flutter project.
+Nomo Authenticator is a simple and secure 2FA (Two Factor Authentication) app. It is based on the Time-based One-Time Password (TOTP) algorithm and is compatible with Google Authenticator.
 
-## Getting Started
+Nomo Authenticator is built with Flutter Web for scanning QR codes is only supported when running within the Nomo app.
 
-This project is a starting point for a Flutter application.
+## Features
 
-A few resources to get you started if this is your first Flutter project:
+- **Simple**: Nomo Authenticator is designed to be simple and easy to use. It has a clean and minimalistic user interface.
+- **Secure**: Nomo Authenticator is built with security in mind. It uses the TOTP algorithm to generate one-time passwords and does not require any network access.
+- **Open Source**: Nomo Authenticator is open source and its source code is available on [GitHub](https://github.com/nomo-app/nomo_authenticator.git).
+- **Multiple Accounts**: Nomo Authenticator supports adding multiple accounts.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## How to run
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```
+git submodule update --recursive --init
+flutter pub get
+flutter run -d chrome
+```

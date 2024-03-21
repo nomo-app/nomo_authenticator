@@ -67,7 +67,6 @@ class SelectActionButton extends ConsumerWidget {
                 ref.read(storageProvider.notifier).addStorageItem(storageItem);
               } catch (e) {
                 debugPrint(e.toString());
-                // ignore: use_build_context_synchronously
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
