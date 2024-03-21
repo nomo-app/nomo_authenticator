@@ -27,8 +27,9 @@ class EditOTPScreen extends HookConsumerWidget {
     return NomoScaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: PrimaryNomoButton(
+        margin: const EdgeInsets.symmetric(horizontal: 16),
         height: 50,
-        width: context.width * 0.8,
+        width: context.width,
         onPressed: () async {
           final StorageItem newItem = StorageItem(
             hostname: hostName.value,
@@ -90,26 +91,35 @@ class EditOTPScreen extends HookConsumerWidget {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  NomoText(
+                    "Hostname",
+                    style: context.theme.typography.b3,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  const SizedBox(height: 8),
                   NomoInput(
                     titleStyle: context.theme.typography.b3.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
-                    title: "Hostname",
-                    titleSpacing: 8,
                     placeHolder: item.hostname,
                     valueNotifier: hostName,
                     background: context.theme.colors.background1,
                     placeHolderStyle: context.theme.typography.b3,
                   ),
                   const SizedBox(height: 16),
+                  NomoText(
+                    "Secret",
+                    style: context.theme.typography.b3,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  const SizedBox(height: 8),
                   NomoInput(
                     titleStyle: context.theme.typography.b3.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
-                    title: "Secret",
                     initialText: item.code,
-                    titleSpacing: 8,
                     maxLines: 1,
                     valueNotifier: secret,
                     obscureText: isObscure.value,
