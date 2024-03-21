@@ -166,10 +166,4 @@ export async function nomoNavigateToWallet(args) {
     return await invokeNomoFunction("nomoNavigateToWallet", args);
 }
 
-
-window.nomoGetLanguage = nomoGetLanguage;
 window.nomoGetPlatformInfo = nomoGetPlatformInfo;
-window.nomoGetDeviceHashes = nomoGetDeviceHashes;
-window.nomoGetDeviceName = nomoGetDeviceName;
-window.nomoRegisterOnWebOnVisible = nomoRegisterOnWebOnVisible;
-window.nomoNavigateToWallet = nomoNavigateToWallet;
