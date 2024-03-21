@@ -27,7 +27,7 @@ class Home extends ConsumerWidget {
         data: (items) => items.isEmpty
             ? Center(
                 child: NomoText(
-                  "No Secrets found!",
+                  "No Secrets found! \n  Add a new one!",
                   style: context.theme.typography.h1,
                 ),
               )
