@@ -14,10 +14,6 @@ class Home extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final storageitems = ref.watch(storageProvider);
 
-    if (storageitems is AsyncData) {
-      print("storageitems ${storageitems.value}");
-    }
-
     return NomoScaffold(
       floatingActionButton: const SelectActionButton(),
       child: storageitems.when(
@@ -32,10 +28,9 @@ class Home extends ConsumerWidget {
                 itemCount: items.length,
                 itemBuilder: (context, index) {
                   return Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(8),
                     child: OTPListTile(
-                      name: items[index].hostname,
-                      secret: items[index].code,
+                      item: items[index],
                     ),
                   );
                 },

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nomo_authenticator/model/storage_item.dart';
 import 'package:nomo_authenticator/providers/storage_provider.dart';
-import 'package:nomo_authenticator/util/utils.dart';
 import 'package:nomo_ui_kit/components/buttons/primary/nomo_primary_button.dart';
 import 'package:nomo_ui_kit/components/dialog/nomo_dialog.dart';
 import 'package:nomo_ui_kit/components/input/textInput/nomo_input.dart';
@@ -67,7 +66,7 @@ class SelectActionButton extends ConsumerWidget {
                 );
                 ref.read(storageProvider.notifier).addStorageItem(storageItem);
               } catch (e) {
-                print(e.toString());
+                debugPrint(e.toString());
                 // ignore: use_build_context_synchronously
                 showDialog(
                   context: context,
@@ -130,6 +129,7 @@ class SelectActionButton extends ConsumerWidget {
     final result = await showDialog(
       context: context,
       builder: (context) => NomoDialog(
+        maxWidth: 400,
         title: 'Enter Code Manually',
         titleStyle: typography.h2,
         content: Column(
@@ -154,7 +154,7 @@ class SelectActionButton extends ConsumerWidget {
         actions: [
           Expanded(
             child: PrimaryNomoButton(
-              height: 48,
+              height: 50,
               backgroundColor: colors.error,
               onPressed: () {
                 Navigator.pop(context);
@@ -170,7 +170,7 @@ class SelectActionButton extends ConsumerWidget {
           const SizedBox(width: 16),
           Expanded(
             child: PrimaryNomoButton(
-              height: 48,
+              height: 50,
               onPressed: () {
                 Navigator.pop(
                   context,

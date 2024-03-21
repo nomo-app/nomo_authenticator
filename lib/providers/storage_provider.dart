@@ -18,8 +18,6 @@ class Storage extends _$Storage {
 
     final result = storage["nomo_authenticator"];
 
-    print("raw result $result");
-
     if (result == null) {
       return [];
     }
@@ -29,8 +27,6 @@ class Storage extends _$Storage {
         List<Map<String, dynamic>>.from(decodedJson);
 
     final items = storageItems.map((e) => StorageItem.fromJson(e)).toList();
-
-    print("items from storage $items");
 
     return items;
   }
@@ -43,6 +39,22 @@ class Storage extends _$Storage {
     );
 
     items.value.add(item);
+
+    final itemJson = jsonEncode(items.value).toString();
+    storage["nomo_authenticator"] = itemJson;
+
+    state = AsyncData(items.value);
+  }
+
+  void removeStorageItem(StorageItem item) async {
+    final storage = window.localStorage;
+
+    var items = AsyncData(
+      await _readStorageItem(),
+    );
+
+    items.value.removeWhere((element) =>
+        element.hostname == item.hostname && element.code == item.code);
 
     final itemJson = jsonEncode(items.value).toString();
     storage["nomo_authenticator"] = itemJson;

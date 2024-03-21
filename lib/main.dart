@@ -4,9 +4,12 @@ import 'package:nomo_authenticator/routes.dart';
 import 'package:nomo_authenticator/theme.dart';
 import 'package:nomo_ui_kit/app/nomo_app.dart';
 import 'package:nomo_ui_kit/theme/nomo_theme.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 final appRouter = AppRouter();
 void main() {
+  usePathUrlStrategy();
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const ProviderScope(child: MyApp()));
 }
 
