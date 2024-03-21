@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nomo_authenticator/model/storage_item.dart';
 import 'package:nomo_authenticator/providers/storage_provider.dart';
 import 'package:nomo_authenticator/widgets/delete_dialog.dart';
+import 'package:nomo_authenticator/widgets/save_confirm_dialog.dart';
 import 'package:nomo_ui_kit/components/app/app_bar/nomo_app_bar.dart';
 import 'package:nomo_ui_kit/components/app/scaffold/nomo_scaffold.dart';
 import 'package:nomo_ui_kit/components/buttons/primary/nomo_primary_button.dart';
@@ -20,13 +21,31 @@ class EditOTPScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isObscure = useState(true);
 
+    final hostName = ValueNotifier(item.hostname);
+    final secret = ValueNotifier(item.code);
+
     return NomoScaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: PrimaryNomoButton(
         height: 50,
         width: context.width * 0.8,
-        onPressed: () {
-          Navigator.of(context).pop();
+        onPressed: () async {
+          final StorageItem newItem = StorageItem(
+            hostname: hostName.value,
+            code: secret.value,
+          );
+
+          final result = await showDialog(
+              context: context,
+              builder: (context) => const SaveConfirmDialog());
+
+          if (result == true) {
+            ref.read(storageProvider.notifier).updateStorageItem(item, newItem);
+            Navigator.of(context).pop();
+          } else {
+            hostName.value = item.hostname;
+            secret.value = item.code;
+          }
         },
         text: "Save",
         textStyle: context.theme.typography.h1.copyWith(
@@ -79,6 +98,7 @@ class EditOTPScreen extends HookConsumerWidget {
                     title: "Hostname",
                     titleSpacing: 8,
                     placeHolder: item.hostname,
+                    valueNotifier: hostName,
                     background: context.theme.colors.background1,
                     placeHolderStyle: context.theme.typography.b3,
                   ),
@@ -91,6 +111,7 @@ class EditOTPScreen extends HookConsumerWidget {
                     initialText: item.code,
                     titleSpacing: 8,
                     maxLines: 1,
+                    valueNotifier: secret,
                     obscureText: isObscure.value,
                     background: context.theme.colors.background1,
                     style: context.theme.typography.b3,

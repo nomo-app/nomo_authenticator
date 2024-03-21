@@ -61,4 +61,23 @@ class Storage extends _$Storage {
 
     state = AsyncData(items.value);
   }
+
+  void updateStorageItem(StorageItem currentItem, StorageItem newItem) async {
+    final storage = window.localStorage;
+
+    var items = AsyncData(
+      await _readStorageItem(),
+    );
+
+    items.value.removeWhere((element) =>
+        element.hostname == currentItem.hostname &&
+        element.code == currentItem.code);
+
+    items.value.add(newItem);
+
+    final itemJson = jsonEncode(items.value).toString();
+    storage["nomo_authenticator"] = itemJson;
+
+    state = AsyncData(items.value);
+  }
 }
