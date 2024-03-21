@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nomo_authenticator/model/storage_item.dart';
+import 'package:nomo_authenticator/providers/storage_provider.dart';
+import 'package:nomo_authenticator/util/utils.dart';
 import 'package:nomo_ui_kit/components/buttons/primary/nomo_primary_button.dart';
 import 'package:nomo_ui_kit/components/dialog/nomo_dialog.dart';
 import 'package:nomo_ui_kit/components/input/textInput/nomo_input.dart';
@@ -50,14 +53,59 @@ class SelectActionButton extends ConsumerWidget {
           case "scanQR":
             final qrCode = await handleQRScan();
             debugPrint(qrCode);
+
+            if (qrCode != null) {
+              try {
+                final uri = Uri.parse(qrCode);
+
+                if (uri.queryParameters['secret'] == null) {
+                  throw Exception('Invalid QR Code');
+                }
+                final storageItem = StorageItem(
+                  hostname: uri.queryParameters['issuer']!,
+                  code: uri.queryParameters['secret']!,
+                );
+                ref.read(storageProvider.notifier).addStorageItem(storageItem);
+              } catch (e) {
+                print(e.toString());
+                // ignore: use_build_context_synchronously
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: NomoText(
+                      'Invalid QR Code',
+                      style: typography.h2,
+                    ),
+                    content: NomoText(
+                      'The QR code you scanned is invalid. Please try again.',
+                      style: typography.b3,
+                    ),
+                    actions: [
+                      PrimaryNomoButton(
+                        padding: const EdgeInsets.all(12),
+                        text: "OK",
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              }
+            }
+
             break;
           case "enterCode":
             // ignore: use_build_context_synchronously
             final result = await handleEnterCode(context);
             debugPrint(result?.entries.toString());
-
-            // WebonKitDart.setLocalStorage(key: key, value: value);
-
+            if (result != null) {
+              final storageItem = StorageItem(
+                hostname: result['hostname']!,
+                code: result['code']!,
+              );
+              ref.read(storageProvider.notifier).addStorageItem(storageItem);
+            }
             break;
           default:
             break;
@@ -66,7 +114,7 @@ class SelectActionButton extends ConsumerWidget {
     );
   }
 
-  Future<String> handleQRScan() async {
+  Future<String?> handleQRScan() async {
     final qrCode = await WebonKitDart.scanQR();
     return qrCode;
   }
