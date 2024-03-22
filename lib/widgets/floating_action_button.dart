@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nomo_authenticator/model/storage_item.dart';
 import 'package:nomo_authenticator/providers/storage_provider.dart';
+import 'package:nomo_authenticator/util/utils.dart';
 import 'package:nomo_ui_kit/components/buttons/primary/nomo_primary_button.dart';
 import 'package:nomo_ui_kit/components/dialog/nomo_dialog.dart';
 import 'package:nomo_ui_kit/components/input/textInput/nomo_input.dart';
@@ -125,7 +126,6 @@ class SelectActionButton extends ConsumerWidget {
     final colors = context.theme.colors;
     final codeNotifier = ValueNotifier<String>('');
     final hostnameNotifier = ValueNotifier<String>('');
-
     final result = await showDialog(
       context: context,
       builder: (context) => NomoDialog(
@@ -172,6 +172,41 @@ class SelectActionButton extends ConsumerWidget {
             child: PrimaryNomoButton(
               height: 50,
               onPressed: () {
+                if (!isValidBase32(codeNotifier.value) &&
+                    codeNotifier.value.isNotEmpty) {
+                  showDialog(
+                    context: context,
+                    builder: (context) => NomoDialog(
+                      maxWidth: 400,
+                      title: 'Invalid Code',
+                      titleStyle: typography.h1,
+                      content: NomoText(
+                        'The code you entered is invalid. Please try again.',
+                        style: typography.b3,
+                      ),
+                      actions: [
+                        Expanded(
+                          child: PrimaryNomoButton(
+                            height: 50,
+                            text: "OK",
+                            textStyle: context.theme.typography.b3.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                  return;
+                }
+                if (hostnameNotifier.value.isEmpty ||
+                    codeNotifier.value.isEmpty) {
+                  return;
+                }
+
                 Navigator.pop(
                   context,
                   {
