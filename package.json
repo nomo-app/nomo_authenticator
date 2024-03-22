@@ -1,6 +1,6 @@
 {
     "scripts": {
-        "build": "flutter build web --release && rm -rf out && mv build/web out && nomo-webon-cli build out",
+        "build": "nomo-webon-cli bumpVersion web/nomo_manifest.json && flutter build web --release && rm -rf out && mv build/web out && nomo-webon-cli build out",
         "deploy": "nomo-webon-cli deploy nomo.tar.gz production"
     },
     "devDependencies": {
