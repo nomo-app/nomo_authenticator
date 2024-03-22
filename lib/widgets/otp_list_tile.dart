@@ -40,7 +40,7 @@ class OTPListTile extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           NomoText(
-            code,
+            "${code.substring(3)} ${code.substring(0, 3)}",
             style: context.typography.b3,
             fontWeight: FontWeight.bold,
           ),

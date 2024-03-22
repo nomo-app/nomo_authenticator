@@ -25,6 +25,7 @@ class SelectActionButton extends ConsumerWidget {
       ),
       onPressed: () async {
         final result = await showMenu(
+          color: context.theme.colors.background1,
           context: context,
           position: RelativeRect.fromSize(
             Rect.fromLTRB(context.width, context.height, 0, 0),

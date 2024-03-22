@@ -8,6 +8,7 @@ import 'package:nomo_authenticator/widgets/save_confirm_dialog.dart';
 import 'package:nomo_ui_kit/components/app/app_bar/nomo_app_bar.dart';
 import 'package:nomo_ui_kit/components/app/scaffold/nomo_scaffold.dart';
 import 'package:nomo_ui_kit/components/buttons/primary/nomo_primary_button.dart';
+import 'package:nomo_ui_kit/components/card/nomo_card.dart';
 import 'package:nomo_ui_kit/components/input/textInput/nomo_input.dart';
 import 'package:nomo_ui_kit/components/text/nomo_text.dart';
 import 'package:nomo_ui_kit/theme/nomo_theme.dart';
@@ -58,7 +59,10 @@ class EditOTPScreen extends HookConsumerWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          icon: const Icon(Icons.arrow_back),
+          icon: Icon(
+            Icons.arrow_back,
+            color: context.theme.colors.foreground1,
+          ),
         ),
         title: NomoText(
           "Edit OTP",
@@ -84,11 +88,17 @@ class EditOTPScreen extends HookConsumerWidget {
       child: SingleChildScrollView(
         child: SizedBox(
           width: context.width,
-          child: Card(
+          child: NomoCard(
             margin: const EdgeInsets.all(16),
-            color: context.theme.colors.background1,
+            backgroundColor: context.theme.colors.background1,
+            border: context.theme.colors.brightness != Brightness.light
+                ? Border.all(color: context.theme.colors.onPrimary, width: 1.5)
+                : null,
+            borderRadius: BorderRadius.circular(8),
+            elevation:
+                context.theme.colors.brightness == Brightness.light ? 1 : 0,
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(22.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,7 +115,7 @@ class EditOTPScreen extends HookConsumerWidget {
                     ),
                     placeHolder: item.hostname,
                     valueNotifier: hostName,
-                    background: context.theme.colors.background1,
+                    background: context.theme.colors.background2,
                     placeHolderStyle: context.theme.typography.b3,
                   ),
                   const SizedBox(height: 16),
@@ -123,15 +133,21 @@ class EditOTPScreen extends HookConsumerWidget {
                     maxLines: 1,
                     valueNotifier: secret,
                     obscureText: isObscure.value,
-                    background: context.theme.colors.background1,
+                    background: context.theme.colors.background2,
                     style: context.theme.typography.b3,
                     placeHolderStyle: context.theme.typography.b3,
                     padding: const EdgeInsets.only(left: 16),
                     trailling: IconButton(
                       iconSize: 21,
                       icon: isObscure.value == false
-                          ? const Icon(Icons.remove_red_eye)
-                          : const Icon(Icons.visibility_off),
+                          ? Icon(
+                              Icons.remove_red_eye,
+                              color: context.theme.colors.foreground1,
+                            )
+                          : Icon(
+                              Icons.visibility_off,
+                              color: context.theme.colors.foreground1,
+                            ),
                       onPressed: () {
                         isObscure.value = !isObscure.value;
                       },

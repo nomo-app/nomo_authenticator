@@ -31,8 +31,14 @@ class Home extends ConsumerWidget {
                   style: context.theme.typography.h1,
                 ),
               )
-            : ListView.builder(
+            : ListView.separated(
                 itemCount: items.length,
+                separatorBuilder: (context, index) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Divider(
+                    color: context.theme.colors.foreground2.withOpacity(0.5),
+                  ),
+                ),
                 itemBuilder: (context, index) {
                   return Container(
                     padding: const EdgeInsets.all(8),
